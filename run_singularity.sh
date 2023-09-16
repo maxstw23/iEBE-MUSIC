@@ -29,7 +29,7 @@ fi
 
 
 cd ${workFolder}/event_0
-bash submit_job.pbs
+bash submit_job.script
 status=$?
 if [ $status -ne 0 ]; then
     exit $status
