@@ -25,7 +25,7 @@ known_initial_types = [
 
 support_cluster_list = [
     'nersc', 'wsugrid', "osg", "local", "guillimin", "mcgill",
-    'stampede2', "anvil"
+    'stampede2', "anvil", "RCF"
 ]
 
 
@@ -86,7 +86,7 @@ source $WORK/iEBE-MUSIC/Cluster_supports/Stampede2/bashrc
 
 source $PROJECT/iEBE-MUSIC/Cluster_supports/Anvil/bashrc
 """)
-    elif cluster in ("local", "osg"):
+    elif cluster in ("local", "osg", "RCF"):
         script.write("#!/bin/bash")
     else:
         print("\U0001F6AB  unrecoginzed cluster name :", cluster)
@@ -281,7 +281,7 @@ rm -fr $results_folder/*
 export OMP_NUM_THREADS={0:d}
 """.format(nthreads))
 
-    if cluster_name != "osg":
+    if cluster_name != "osg" or cluster_name != "RCF":
         script.write("sleep {}".format(event_id))
         script.write("""
 # IPGlasma evolution (run 1 event)
@@ -330,7 +330,7 @@ rm -fr $results_folder/*
 export OMP_NUM_THREADS={0:d}
 """.format(nthreads))
 
-    if cluster_name != "osg":
+    if cluster_name != "osg" or cluster_name != "RCF":
         script.write("""
 # KoMPoST EKT evolution
 ./KoMPoST.exe setup.ini 1> run.log 2> run.err
@@ -900,7 +900,7 @@ def main():
     sys.path.insert(0, par_diretory)
     parameter_dict = __import__(args.par_dict.split('.py')[0].split("/")[-1])
 
-    if cluster_name == "osg":
+    if cluster_name == "osg" or cluster_name == "RCF":
         if seed == -1:
             seed = 0
         seed += job_id
