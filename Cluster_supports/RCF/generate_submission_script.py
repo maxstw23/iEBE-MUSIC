@@ -37,26 +37,32 @@ def write_submission_script(para_dict_):
     
     script.write("""    
     <ResourceUsage>
-        <Memory>2024</Memory>
-        <MinStorage>2024</MinStorage>
+        <Memory>
+            <MinMemory>2024</MinMemory>
+        </Memory>
+        <StorageSpace>
+            <MinStorage>2024</MinStorage>
+        </StorageSpace>
     </ResourceUsage>""")
     script.write("""
     <Sandbox>
-        <File> ./run_singularity.sh </File>
-        <File> {0} </File>
-        <File> /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
+        <Package>
+            <File> ./run_singularity.sh </File>
+            <File> {0} </File>
+            <File> /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
 
     if para_dict_['bayesFlag']:
         script.write("""
-        <File> {0} </File>
+            <File> {0} </File>
 """.format(para_dict_['bayesFile']))
         
     script.write("""
+        </Package>
     </Sandbox>
     <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
     <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
-    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL={0}/data>
-    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL={0}/data/>
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL="{0}/data/"/>
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL="{0}/data/"/>
 </job>""".format(para_dict_['output_path']))
 
     script.close()
