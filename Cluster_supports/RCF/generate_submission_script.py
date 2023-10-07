@@ -11,7 +11,7 @@ FILENAME = "singularity.xml"
 def print_usage():
     """This function prints out help messages"""
     print("Usage: {} ".format(sys.argv[0].split("/")[-1])
-          + "Njobs Nevents_per_job N_threads SingularityImage ParameterFile "
+          + "Njobs Nevents_per_job N_threads SingularityImage Outputpath ParameterFile "
           + "jobId [bayesFile]")
 
 
@@ -35,7 +35,8 @@ def write_submission_script(para_dict_):
     script.write("""
     <shell>/bin/sh -c 'exec singularity exec -e -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
     
-    script.write("""    <ResourceUsage>
+    script.write("""    
+    <ResourceUsage>
         <Memory>2024</Memory>
         <MinStorage>2024</MinStorage>
     </ResourceUsage>""")
@@ -54,9 +55,9 @@ def write_submission_script(para_dict_):
     </Sandbox>
     <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
     <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
-    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
-    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
-</job>""")
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL={0}/data>
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL={0}/data/>
+</job>""".format(para_dict_['output_path']))
 
     script.close()
 
@@ -118,11 +119,11 @@ if __name__ == "__main__":
         N_THREADS = int(sys.argv[3])
         SINGULARITY_IMAGE_PATH = sys.argv[4]
         SINGULARITY_IMAGE = SINGULARITY_IMAGE_PATH.split("/")[-1]
-        SINGULARITY_PATH = SINGULARITY_IMAGE_PATH[:-len(SINGULARITY_IMAGE)-1]
-        PARAMFILE = sys.argv[5]
-        JOBID = sys.argv[6]
-        if len(sys.argv) == 8:
-            bayesFile = sys.argv[7]
+        OUTPUT_PATH = sys.argv[5]
+        PARAMFILE = sys.argv[6]
+        JOBID = sys.argv[7]
+        if len(sys.argv) == 9:
+            bayesFile = sys.argv[8]
             bayesFlag = True
     except (IndexError, ValueError) as e:
         print_usage()
@@ -133,8 +134,8 @@ if __name__ == "__main__":
         'n_events_per_job': N_EVENTS_PER_JOBS,
         'n_threads': N_THREADS,
         'image_name': SINGULARITY_IMAGE,
-        'image_path': SINGULARITY_PATH,
         'image_with_path': SINGULARITY_IMAGE_PATH,
+        'output_path': OUTPUT_PATH,
         'paraFile': PARAMFILE,
         'job_id': JOBID,
         'bayesFlag': bayesFlag,
