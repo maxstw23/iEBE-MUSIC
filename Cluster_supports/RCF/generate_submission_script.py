@@ -66,6 +66,7 @@ def write_job_running_script(para_dict_):
     script = open("run_singularity.sh", "w")
     script.write("""#!/usr/bin/env bash
 
+source ~/venv/bin/activate.csh
 parafile=$1
 processId=$2
 nHydroEvents=$3
