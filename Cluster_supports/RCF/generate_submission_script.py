@@ -20,7 +20,7 @@ def write_submission_script(para_dict_):
     random_seed = random.SystemRandom().randint(0, 10000000)
     imagePathHeader = "osdf://"
     script = open(FILENAME, "w")
-    script.write("""<?xml version="1.0"? encoding="UTF-8" ?>
+    script.write("""<?xml version="1.0" encoding="UTF-8"?>
 <job>
     <command>""")
                  
