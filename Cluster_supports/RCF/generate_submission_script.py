@@ -22,40 +22,40 @@ def write_submission_script(para_dict_):
     script = open(FILENAME, "w")
     script.write("""<?xml version="1.0"? encoding="UTF-8"?>
 <job>
-<command>""")
+    <command>""")
                  
     if para_dict_["bayesFlag"]:
-        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3} {4}
+        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3} {4} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed, para_dict_["bayesFile"]))
     else:
-        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3}
+        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
-    script.write("""</command>""")
     script.write("""
-<shell>/bin/sh -c 'exec singularity exec -e -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
-    script.write("""<ResourceUsage>
-    <Memory>2024</Memory>
-    <MinStorage>2024</MinStorage>
-</ResourceUsage>""")
+    <shell>/bin/sh -c 'exec singularity exec -e -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
+    
+    script.write("""    <ResourceUsage>
+        <Memory>2024</Memory>
+        <MinStorage>2024</MinStorage>
+    </ResourceUsage>""")
     script.write("""
-<Sandbox>
-    <File> ./run_singularity.sh </File>
-    <File> {0} </File>
-    <File> /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
+    <Sandbox>
+        <File> ./run_singularity.sh </File>
+        <File> {0} </File>
+        <File> /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
 
     if para_dict_['bayesFlag']:
         script.write("""
-    <File> {0} </File>
+        <File> {0} </File>
 """.format(para_dict_['bayesFile']))
         
     script.write("""
-</Sandbox>
-<stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
-<stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
-<output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
-<output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
+    </Sandbox>
+    <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
+    <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
+    <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
 </job>""")
 
     script.close()
