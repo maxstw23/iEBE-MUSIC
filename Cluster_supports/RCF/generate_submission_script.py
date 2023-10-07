@@ -25,11 +25,11 @@ def write_submission_script(para_dict_):
     <command>""")
                  
     if para_dict_["bayesFlag"]:
-        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3} {4} </command>
+        script.write("""./run_singularity.sh {0} $JOBID {1} {2} {3} {4} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed, para_dict_["bayesFile"]))
     else:
-        script.write("""./run_singularity.sh {0} $(Process) {1} {2} {3} </command>
+        script.write("""./run_singularity.sh {0} $JOBID {1} {2} {3} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
     script.write("""
@@ -59,8 +59,8 @@ def write_submission_script(para_dict_):
     script.write("""
         </Package>
     </SandBox>
-    <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
-    <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
+    <stderr URL="file:{0}/log/job.$(Cluster).$JOBID.error" />
+    <stdout URL="file:{0}/log/job.$(Cluster).$JOBID.output" />
     <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL="{0}/data/"/>
     <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL="{0}/data/"/>
 </job>""".format(para_dict_['output_path']))
