@@ -25,11 +25,11 @@ def write_submission_script(para_dict_):
     <command>""")
                  
     if para_dict_["bayesFlag"]:
-        script.write("""./run_singularity.sh {0} $JOBID {1} {2} {3} {4} </command>
+        script.write("""./run_singularity.sh {0} $(Cluster) {1} {2} {3} {4} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed, para_dict_["bayesFile"]))
     else:
-        script.write("""./run_singularity.sh {0} $JOBID {1} {2} {3} </command>
+        script.write("""./run_singularity.sh {0} $(Cluster) {1} {2} {3} </command>
 """.format(para_dict_["paraFile"], para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
     script.write("""
