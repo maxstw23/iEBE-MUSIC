@@ -54,39 +54,10 @@ def write_submission_script(para_dict_):
 </Sandbox>
 <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
 <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
-<output fromScratch="./playground/event_0//>
-                 
-    
+<output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
+<output fromScratch="./playground/event_0/EVENT_RESULT_*/*.gz" toURL=/star/data01/pwg/xiatong/iEBE-MUSIC_data/>
+</job>""")
 
-    script.write(
-            "transfer_checkpoint_files = playground/event_0/EVENT_RESULTS_$(Process).tar.gz\n")
-
-    script.write("""
-transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5
-
-error = ../log/job.$(Cluster).$(Process).error
-output = ../log/job.$(Cluster).$(Process).output
-log = ../log/job.$(Cluster).$(Process).log
-
-#+JobDurationCategory = "Long"
-max_idle = 1000
-
-# remove the failed jobs
-periodic_remove = (ExitCode == 73)
-
-checkpoint_exit_code = 85
-
-# Send the job to Held state on failure.
-on_exit_hold = (ExitBySignal == True) || (ExitCode != 0 && ExitCode != 73)
-
-# The below are good base requirements for first testing jobs on OSG,
-# if you don't have a good idea of memory and disk usage.
-request_cpus = {0:d}
-request_memory = 2 GB
-request_disk = 2 GB
-
-# Queue one job with the above specifications.
-queue {1:d}""".format(para_dict_["n_threads"], para_dict_["n_jobs"]))
     script.close()
 
 
@@ -124,7 +95,7 @@ printf "Job running as user: `/usr/bin/id`\\n"
     script.write("""
 cd playground/event_0
 mv EVENT_RESULTS_${processId}.tar.gz playground/event_0
-bash submit_job.script
+bash submit_job.pbs
 status=$?
 if [ $status -ne 0 ]; then
     exit $status

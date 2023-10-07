@@ -12,7 +12,7 @@ import argparse
 from math import ceil
 from glob import glob
 
-support_cluster_list = ["wsugrid", "osg", "local", "stampede2", "anvil"]
+support_cluster_list = ["wsugrid", "osg", "local", "stampede2", "anvil", "RCF"]
 
 
 def write_script_header(cluster, script, n_threads, event_id, walltime,
@@ -33,7 +33,7 @@ def write_script_header(cluster, script, n_threads, event_id, walltime,
 
 cd {4:s}
 """.format(event_id, n_threads, mem, walltime, working_folder))
-    elif cluster in ("local", "osg"):
+    elif cluster in ("local", "osg", "RCF"):
         script.write("#!/bin/bash")
     elif cluster == "stampede2":
         script.write("""#!/usr/bin/env bash
