@@ -47,13 +47,13 @@ def write_submission_script(para_dict_):
     script.write("""
     <SandBox>
         <Package>
-            <File> ./run_singularity.sh </File>
-            <File> {0} </File>
-            <File> /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
+            <File>file: ./run_singularity.sh </File>
+            <File>file: {0} </File>
+            <File>file: /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
 
     if para_dict_['bayesFlag']:
         script.write("""
-            <File> {0} </File>
+            <File>file: {0} </File>
 """.format(para_dict_['bayesFile']))
         
     script.write("""
