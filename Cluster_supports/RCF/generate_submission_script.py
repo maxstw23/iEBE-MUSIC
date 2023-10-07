@@ -73,7 +73,7 @@ def write_job_running_script(para_dict_):
     script.write("""#!/usr/bin/env bash
 
 bash ./iEBE-MUSIC/Cluster_supports/OSG/installPythonVenv.sh
-source ./venv/bin/activate.csh
+source ./venv/bin/activate
 parafile=$1
 processId=$2
 nHydroEvents=$3
