@@ -45,7 +45,7 @@ def write_submission_script(para_dict_):
         </StorageSpace>
     </ResourceUsage>""")
     script.write("""
-    <Sandbox>
+    <SandBox>
         <Package>
             <File> ./run_singularity.sh </File>
             <File> {0} </File>
@@ -58,7 +58,7 @@ def write_submission_script(para_dict_):
         
     script.write("""
         </Package>
-    </Sandbox>
+    </SandBox>
     <stderr URL="file:{0}/log/job.$(Cluster).$(Process).error" />
     <stdout URL="file:{0}/log/job.$(Cluster).$(Process).output" />
     <output fromScratch="./playground/event_0/EVENT_RESULT_*/*.h5" toURL="{0}/data/"/>
