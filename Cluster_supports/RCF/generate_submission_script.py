@@ -45,11 +45,10 @@ def write_submission_script(para_dict_):
         </StorageSpace>
     </ResourceUsage>""")
     script.write("""
-    <SandBox installer="ZIP">
-        <Package name="iebe-music_test_run">
+    <SandBox>
+        <Package">
             <File>file: ./run_singularity.sh </File>
-            <File>file: {0} </File>
-            <File>file: /star/u/maxwoo/iEBE-MUSIC/ </File>""".format(para_dict_["paraFile"]))
+            <File>file: {0} </File>""".format(para_dict_["paraFile"]))
 
     if para_dict_['bayesFlag']:
         script.write("""
