@@ -33,7 +33,7 @@ def write_submission_script(para_dict_):
 """.format(para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
     script.write("""
-    <shell>SINGULARITY_SHELL=/bin/sh -c 'exec singularity exec -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
+    <shell>/bin/sh -c 'exec singularity exec -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
     
     script.write("""    
     <ResourceUsage>
