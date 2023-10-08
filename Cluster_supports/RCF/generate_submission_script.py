@@ -25,15 +25,15 @@ def write_submission_script(para_dict_):
     <command>""")
                  
     if para_dict_["bayesFlag"]:
-        script.write("""bash ./run_singularity.sh {0} {1} {2} {3} {4} {5} </command>
+        script.write("""./run_singularity.sh {0} {1} {2} {3} {4} {5} </command>
 """.format(para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed, para_dict_["bayesFile"]))
     else:
-        script.write("""bash ./run_singularity.sh {0} {1} {2} {3} {4} </command>
+        script.write("""./run_singularity.sh {0} {1} {2} {3} {4} </command>
 """.format(para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
     script.write("""
-    <shell>/bin/sh -c 'exec singularity exec -e -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
+    <shell>SINGULARITY_SHELL=/bin/sh -c 'exec singularity exec -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
     
     script.write("""    
     <ResourceUsage>
@@ -94,11 +94,11 @@ printf "Job running as user: `/usr/bin/id`\\n"
     if para_dict_["bayesFlag"]:
         script.write("""bayesFile=$6
 
-./iEBE-MUSIC/generate_jobs.py -w playground -c OSG -par ${parafile} -id ${processId} -n_th ${nthreads} -n_urqmd ${nthreads} -n_hydro ${nHydroEvents} -seed ${seed} -b ${bayesFile} --nocopy --continueFlag
+/home/iEBE-MUSIC/generate_jobs.py -w playground -c OSG -par ${parafile} -id ${processId} -n_th ${nthreads} -n_urqmd ${nthreads} -n_hydro ${nHydroEvents} -seed ${seed} -b ${bayesFile} --nocopy --continueFlag
 """)
     else:
         script.write("""
-./iEBE-MUSIC/generate_jobs.py -w playground -c OSG -par ${parafile} -id ${processId} -n_th ${nthreads} -n_urqmd ${nthreads} -n_hydro ${nHydroEvents} -seed ${seed} --nocopy --continueFlag
+/home/iEBE-MUSIC/generate_jobs.py -w playground -c OSG -par ${parafile} -id ${processId} -n_th ${nthreads} -n_urqmd ${nthreads} -n_hydro ${nHydroEvents} -seed ${seed} --nocopy --continueFlag
 """)
 
     script.write("""
