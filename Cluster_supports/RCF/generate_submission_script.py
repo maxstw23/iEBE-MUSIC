@@ -46,7 +46,7 @@ def write_submission_script(para_dict_):
     </ResourceUsage>""")
     script.write("""
     <SandBox>
-        <Package">
+        <Package>
             <File>file: ./run_singularity.sh </File>
             <File>file: {0} </File>""".format(para_dict_["paraFile"]))
 
