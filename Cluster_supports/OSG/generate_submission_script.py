@@ -19,6 +19,7 @@ def write_submission_script(para_dict_):
     jobName = "iEBEMUSIC_{}".format(para_dict_["job_id"])
     random_seed = random.SystemRandom().randint(0, 10000000)
     imagePathHeader = "osdf://"
+    imagePathOSDF = para_dict_["image_with_path"][para_dict_["image_with_path"].find("/ospool"):]
     script = open(FILENAME, "w")
     if para_dict_["bayesFlag"]:
         script.write("""universe = vanilla
@@ -40,7 +41,7 @@ WhenToTransferOutput = ON_EXIT
 
 +SingularityImage = "{1}"
 Requirements = SINGULARITY_CAN_USE_SIF && StringListIMember("stash", HasFileTransferPluginMethods)
-""".format(jobName, imagePathHeader + para_dict_["image_with_path"]))
+""".format(jobName, imagePathHeader + imagePathOSDF))
 
     if para_dict_['bayesFlag']:
         script.write("""
