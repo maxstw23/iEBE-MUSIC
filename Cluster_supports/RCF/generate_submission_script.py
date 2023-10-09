@@ -26,11 +26,11 @@ def write_submission_script(para_dict_):
                  
     if para_dict_["bayesFlag"]:
         script.write("""singularity exec -B /direct -B /star -B /afs -B /gpfs {0} ./run_singularity.sh {1} {2} {3} {4} {5} {6} </command>
-""".format(para_dict["image_iwth_path"], para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
+""".format(para_dict["image_with_path"], para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed, para_dict_["bayesFile"]))
     else:
         script.write("""singularity exec -B /direct -B /star -B /afs -B /gpfs {0} ./run_singularity.sh {1} {2} {3} {4} {5} </command>
-""".format(para_dict["image_iwth_path"], para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
+""".format(para_dict["image_with_path"], para_dict_["paraFile"], random_seed, para_dict_["n_events_per_job"],
            para_dict_["n_threads"], random_seed))
     # script.write("""
     # <shell>/bin/sh -c 'exec singularity exec -B /direct -B /star -B /afs -B /gpfs {0}</shell>""".format(para_dict_["image_with_path"]))
