@@ -57,8 +57,7 @@ transfer_input_files = {0}
 
     script.write("""
 # transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5
-transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/data/spvn_results_$(Process).h5;
-playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).gz = {0}/data/particle_list_$(Process).gz"
+transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/data/spvn_results_$(Process).h5; playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).gz = {0}/data/particle_list_$(Process).gz"
                  
 error = ../log/job.$(Cluster).$(Process).error
 output = ../log/job.$(Cluster).$(Process).output
