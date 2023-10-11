@@ -56,8 +56,10 @@ transfer_input_files = {0}
             "transfer_checkpoint_files = playground/event_0/EVENT_RESULTS_$(Process).tar.gz\n")
 
     script.write("""
-transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5
-
+# transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5
+transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/data/$(Process).h5;
+playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).gz = {0}/data/particle_list_$(Process).gz"
+                 
 error = ../log/job.$(Cluster).$(Process).error
 output = ../log/job.$(Cluster).$(Process).output
 log = ../log/job.$(Cluster).$(Process).log
@@ -75,12 +77,12 @@ on_exit_hold = (ExitBySignal == True) || (ExitCode != 0 && ExitCode != 73)
 
 # The below are good base requirements for first testing jobs on OSG,
 # if you don't have a good idea of memory and disk usage.
-request_cpus = {0:d}
+request_cpus = {1:d}
 request_memory = 2 GB
 request_disk = 2 GB
 
 # Queue one job with the above specifications.
-queue {1:d}""".format(para_dict_["n_threads"], para_dict_["n_jobs"]))
+queue {2:d}""".format(imagePathHeader + imagePathOSDF[imagePathOSDF.rfind('/')], para_dict_["n_threads"], para_dict_["n_jobs"]))
     script.close()
 
 
