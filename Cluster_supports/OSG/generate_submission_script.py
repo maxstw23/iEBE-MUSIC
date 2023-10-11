@@ -20,6 +20,8 @@ def write_submission_script(para_dict_):
     random_seed = random.SystemRandom().randint(0, 10000000)
     imagePathHeader = "osdf://"
     imagePathOSDF = para_dict_["image_with_path"][para_dict_["image_with_path"].find("/ospool"):]
+    publicPath = imagePathOSDF[:imagePathOSDF.rfind('/')]
+    publicPath = publicPath[:publicPath.rfind('/')]
     script = open(FILENAME, "w")
     if para_dict_["bayesFlag"]:
         script.write("""universe = vanilla
@@ -81,7 +83,7 @@ request_memory = 2 GB
 request_disk = 2 GB
 
 # Queue one job with the above specifications.
-queue {2:d}""".format(imagePathHeader + imagePathOSDF[:imagePathOSDF.rfind('/')], para_dict_["n_threads"], para_dict_["n_jobs"]))
+queue {2:d}""".format(imagePathHeader + publicPath, para_dict_["n_threads"], para_dict_["n_jobs"]))
     script.close()
 
 
