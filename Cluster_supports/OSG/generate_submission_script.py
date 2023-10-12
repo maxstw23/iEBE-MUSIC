@@ -42,6 +42,7 @@ should_transfer_files = YES
 WhenToTransferOutput = ON_EXIT
 
 +SingularityImage = "{1}"
++UNDESIRED_Sites = "UChicago"
 Requirements = SINGULARITY_CAN_USE_SIF && StringListIMember("stash", HasFileTransferPluginMethods)
 """.format(jobName, imagePathHeader + imagePathOSDF))
 
