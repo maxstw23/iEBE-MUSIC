@@ -11,8 +11,8 @@ FILENAME = "singularity.submit"
 def print_usage():
     """This function prints out help messages"""
     print("Usage: {} ".format(sys.argv[0].split("/")[-1])
-          + "Njobs Nevents_per_job N_threads SingularityImagePath SingularityImage ParameterFile "
-          + "jobId JustHydro OversamplefromHydro [bayesFile]")
+          + "Njobs Nevents_per_job N_threads SingularityImage ParameterFile "
+          + "jobId [bayesFile]")
 
 
 def write_submission_script(para_dict_):
@@ -40,7 +40,6 @@ JobBatchName = {0}
 
 should_transfer_files = YES
 WhenToTransferOutput = ON_EXIT
-preserve_relative_paths = True
 
 +SingularityImage = "{1}"
 +UNDESIRED_Sites = "UChicago"
@@ -51,10 +50,6 @@ Requirements = SINGULARITY_CAN_USE_SIF && StringListIMember("stash", HasFileTran
         script.write("""
 transfer_input_files = {0}, {1}
 """.format(para_dict_['paraFile'], para_dict_['bayesFile']))
-    elif para_dict_["oversample_from_hydro"]:
-        script.write("""
-transfer_input_files = {0}, {1}
-""".format(para_dict_['paraFile'], para_dict_['hyrdo_surface']))
     else:
         script.write("""
 transfer_input_files = {0}
@@ -63,17 +58,10 @@ transfer_input_files = {0}
     script.write(
             "transfer_checkpoint_files = playground/event_0/EVENT_RESULTS_$(Process).tar.gz\n")
 
-    if not para_dict_["just_hydro"]:
-        script.write("""
+    script.write("""
 transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5, playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin, playground/event_0/strings_event_$(Process).dat
 transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/{1}/spvn_results_$(Process).h5; playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin = {0}/{1}/particle_list_$(Process).bin; playground/event_0/strings_event_$(Process).dat = {0}/{1}/strings_event_$(Process).dat"
-""").format(imagePathHeader + publicPath, jobName)
-    else:
-        script.write("""
-transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/hydro_results_$(Process)
-transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/hydro_results_$(Process) = {0}/{1}/hydro_results_$(Process)"
-""").format(imagePathHeader + publicPath, jobName)
-        script.write("""
+                 
 error = ../log/job.$(Cluster).$(Process).error
 output = ../log/job.$(Cluster).$(Process).output
 log = ../log/job.$(Cluster).$(Process).log
@@ -134,7 +122,6 @@ printf "Job running as user: `/usr/bin/id`\\n"
     script.write("""
 cd playground/event_0
 mv EVENT_RESULTS_${processId}.tar.gz playground/event_0
-mv ../../hydro_results_${processId} playground/event_0/EVENT_RESULTS_${processId}
 bash submit_job.script
 status=$?
 if [ $status -ne 0 ]; then
@@ -160,11 +147,8 @@ if __name__ == "__main__":
         SINGULARITY_IMAGE = SINGULARITY_IMAGE_PATH.split("/")[-1]
         PARAMFILE = sys.argv[5]
         JOBID = sys.argv[6]
-        JUST_HYDRO = sys.argv[7]
-        OVERSAMPLE_FROM_HYDRO = sys.argv[8]
-        HYDRO_SURFACE = sys.argv[9]
-        if len(sys.argv) == 11:
-            bayesFile = sys.argv[10]
+        if len(sys.argv) == 8:
+            bayesFile = sys.argv[7]
             bayesFlag = True
     except (IndexError, ValueError) as e:
         print_usage()
@@ -178,9 +162,6 @@ if __name__ == "__main__":
         'image_with_path': SINGULARITY_IMAGE_PATH,
         'paraFile': PARAMFILE,
         'job_id': JOBID,
-        'just_hydro': JUST_HYDRO,
-        'oversample_from_hydro': OVERSAMPLE_FROM_HYDRO,
-        'hyrdo_surface': HYDRO_SURFACE,
         'bayesFlag': bayesFlag,
         'bayesFile': bayesFile,
     }
