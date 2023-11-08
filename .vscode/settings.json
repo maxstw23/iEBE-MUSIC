@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "readPicoDst.C": "cpp",
-        "SnessUrQMD.C": "cpp"
+        "SnessUrQMD.C": "cpp",
+        "makeAmptroot.C": "cpp"
     }
 }

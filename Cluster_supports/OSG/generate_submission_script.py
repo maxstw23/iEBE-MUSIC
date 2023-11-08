@@ -59,8 +59,8 @@ transfer_input_files = {0}
             "transfer_checkpoint_files = playground/event_0/EVENT_RESULTS_$(Process).tar.gz\n")
 
     script.write("""
-transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5, playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin, playground/event_0/strings_event_$(Process).dat
-transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/{1}/spvn_results_$(Process).h5; playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin = {0}/{1}/particle_list_$(Process).bin; playground/event_0/strings_event_$(Process).dat = {0}/{1}/strings_event_$(Process).dat"
+transfer_output_files = playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5, playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin, playground/event_0/strings_event_$(Process).dat, playground/event_0/spectators_event_$(Process).dat
+transfer_output_remaps = "playground/event_0/EVENT_RESULTS_$(Process)/spvn_results_$(Process).h5 = {0}/{1}/spvn_results_$(Process).h5; playground/event_0/EVENT_RESULTS_$(Process)/particle_list_$(Process).bin = {0}/{1}/particle_list_$(Process).bin; playground/event_0/strings_event_$(Process).dat = {0}/{1}/strings_event_$(Process).dat; playground/event_0/spectators_event_$(Process).dat = {0}/{1}/spectators_event_$(Process).dat"
                  
 error = ../log/job.$(Cluster).$(Process).error
 output = ../log/job.$(Cluster).$(Process).output
